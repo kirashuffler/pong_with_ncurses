@@ -18,7 +18,10 @@ public:
   template<size_t N>
   Player(std::array<Point, N>& board_points,
       size_t player_index,
-      size_t player_width_);
+      size_t player_width_):
+    points(std::next(board_points.begin(), player_index), player_width_)
+  {
+  };
 
   void Initialize(uint16_t x, uint16_t y);
   void Move(uint16_t diff);

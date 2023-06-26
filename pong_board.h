@@ -43,7 +43,18 @@ namespace pong_game
       const points_array& GetPointsBuffer() const;
 
       template<PlayerType CurrentPlayer, PlayerDirection Direction>
-        void MovePlayer();
+      void MovePlayer()
+      {
+        auto& cur_player = CurrentPlayer == PlayerType::ONE ? player1_ : player2_;
+        if (Direction == PlayerDirection::UP && CollisionTopBorderPlayer(cur_player))
+          return;
+
+        if (Direction == PlayerDirection::DOWN && CollisionBottomBorderPlayer(cur_player))
+          return;
+
+        cur_player.Move(static_cast<int>(Direction));
+      };
+
     private:
 
       bool CollisionBottomBorder(Point& point);

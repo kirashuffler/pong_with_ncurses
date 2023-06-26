@@ -24,19 +24,6 @@ namespace pong_game
     return points_;
   }
 
-  template <PongBoard::PlayerType CurrentPlayer, PongBoard::PlayerDirection Direction>
-  void PongBoard::MovePlayer()
-  {
-    auto& cur_player = CurrentPlayer == PlayerType::ONE ? player1_ : player2_;
-    if (Direction == PlayerDirection::UP && CollisionTopBorderPlayer(cur_player))
-      return;
-
-    if (Direction == PlayerDirection::DOWN && CollisionBottomBorderPlayer(cur_player))
-      return;
-
-    cur_player.Move(static_cast<int>(Direction));
-  }
-
   bool PongBoard::CollisionBottomBorder(Point& point)
   {
     return (point.y >= border_bottom_y_ - 1);
