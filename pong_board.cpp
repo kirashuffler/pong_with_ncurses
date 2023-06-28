@@ -1,4 +1,5 @@
 #include "pong_board.h"
+#include <cmath>
 
 namespace pong_game
 {
@@ -17,8 +18,8 @@ namespace pong_game
     player1_.Initialize(border_left_x_ + 1, player_y_pos);
     player2_.Initialize(border_right_x_ - 1, player_y_pos);
     // initialize ball
-    ball_.point.x = points_[player1_index_].x + 1;
-    ball_.point.y = points_[player1_index_].y + 1;
+    ball_.SetXY(points_[player1_index_].x + 1,
+                points_[player1_index_].y + 1);
     ball_.point.ch = '0';
 
     initial_points_ = points_;
@@ -71,7 +72,7 @@ namespace pong_game
       points_ = initial_points_;
       ball_.d_x = -1;
       ball_.d_y = 0;
-      ball_.point.x = border_right_x_ - 2;
+      ball_.SetXY(initial_points_[player2_index_].x, initial_points_[player2_index_].y + 1);
     }
 
     if (ball_.point.x == border_right_x_ - 1 && ball_.d_x > 0)
@@ -79,27 +80,31 @@ namespace pong_game
       points_ = initial_points_;
       ball_.d_x = 1;
       ball_.d_y = 0;
-      ball_.point.x = border_left_x_ + 2;
+      ball_.SetXY(initial_points_[player1_index_].x, initial_points_[player1_index_].y + 1);
     }
 
     // Collision with player one
     if (ball_.point.x == player1_.points.front().x + 1 &&
         ball_.d_x < 0 &&
-        ball_.point.y >= player1_.points.front().y - 1 &&
-        ball_.point.y <= player1_.points.back().y + 1)
-    {
-      ball_.d_y = player1_.d_y;
-      ball_.d_x *= -1;
-    }
+        ball_.point.y >= player1_.points.front().y &&
+        ball_.point.y <= player1_.points.back().y)
+      HandleBallPlayerCollision(player1_);
 
     // Collision with player two
     if (ball_.point.x == player2_.points.front().x - 1 &&
         ball_.d_x > 0 &&
-        ball_.point.y >= player2_.points.front().y - 1 &&
-        ball_.point.y <= player2_.points.back().y + 1)
-    {
-      ball_.d_y = player2_.d_y;
-      ball_.d_x *= -1;
-    }
+        ball_.point.y >= player2_.points.front().y &&
+        ball_.point.y <= player2_.points.back().y)
+      HandleBallPlayerCollision(player2_);
+  }
+
+  void PongBoard::HandleBallPlayerCollision(Player& player)
+  {
+    constexpr float d_y_multiplier = 0.2;
+    ball_.d_y += player.d_y * d_y_multiplier;
+    ball_.d_x *= -1;
+    auto abs_norm = std::max(std::abs(ball_.d_y), std::abs(ball_.d_x));
+    ball_.d_x /= abs_norm;
+    ball_.d_y /= abs_norm;
   }
 } // namespace pong_game

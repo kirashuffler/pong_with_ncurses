@@ -6,7 +6,7 @@ int main()
   using namespace pong_game;
 
   constexpr uint16_t main_width = 50;
-  constexpr uint16_t main_height = 20;
+  constexpr uint16_t main_height = 14;
   PongBoard board(main_height, main_width);
 
   /* auto renderer = NcursesRenderer(main_height, main_width, */
@@ -31,7 +31,7 @@ int main()
         &board)
   );
 
-  renderer.AddInputListener('m',
+  renderer.AddInputListener(',',
       std::bind(
         &PongBoard::MovePlayer<PongBoard::PlayerType::TWO, PongBoard::PlayerDirection::DOWN>,
         &board)

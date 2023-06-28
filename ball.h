@@ -13,13 +13,13 @@ namespace pong_game
 
     Ball(Point& point);
     void UpdatePosition();
+    void SetXY(uint16_t x, uint16_t y);
   public:
     Point& point;
-    int16_t d_x = 1, d_y = 0;
-    uint16_t target_ticks_x = 1, target_ticks_y = 1; //ttu - target ticks to update
+    float d_x = 1, d_y = 0;
 
   private:
-    uint16_t cur_tick_x = 0, cur_tick_y = 0;
+    float x_float_, y_float_;
   };
 
 } //namespace pong_game

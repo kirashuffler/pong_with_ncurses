@@ -72,6 +72,8 @@ namespace pong_game
 
       void HandleBallCollisions();
 
+      void HandleBallPlayerCollision(Player& player);
+
     private:
       uint16_t height_;
       uint16_t width_;
