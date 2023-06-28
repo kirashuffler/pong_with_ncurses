@@ -1,9 +1,11 @@
-#include "point.h"
 #include <array>
 #include <span>
 #include <iterator>
-#include "player.h"
 #include <cstdint>
+
+#include "point.h"
+#include "ball.h"
+#include "player.h"
 
 namespace pong_game
 {
@@ -42,6 +44,8 @@ namespace pong_game
 
       const points_array& GetPointsBuffer() const;
 
+      void StateUpdate();
+
       template<PlayerType CurrentPlayer, PlayerDirection Direction>
       void MovePlayer()
       {
@@ -55,6 +59,7 @@ namespace pong_game
         cur_player.Move(static_cast<int>(Direction));
       };
 
+
     private:
 
       bool CollisionBottomBorder(Point& point);
@@ -64,6 +69,8 @@ namespace pong_game
       bool CollisionTopBorderPlayer(Player& player);
 
       bool CollisionBottomBorderPlayer(Player& player);
+
+      void HandleBallCollisions();
 
     private:
       uint16_t height_;
@@ -75,9 +82,11 @@ namespace pong_game
       const uint16_t border_top_y_;
       const uint16_t border_bottom_y_;
 
-      points_array points_;
+      points_array points_, initial_points_;
 
       Player player1_, player2_;
+      uint16_t prev_player1_y_, prev_player2_y_;
+      Ball ball_;
   };
 
 } //namespace pong_game

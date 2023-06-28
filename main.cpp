@@ -9,10 +9,10 @@ int main()
   constexpr uint16_t main_height = 20;
   PongBoard board(main_height, main_width);
 
-  auto renderer = NcursesRenderer(main_height, main_width,
-      33, std::span(board.GetPointsBuffer()));
-  /* NcursesRenderer<board.GetPointsBufferSize()> */
-  /*   renderer {main_height, main_width, 33, board.GetPointsBuffer()}; */
+  /* auto renderer = NcursesRenderer(main_height, main_width, */
+  /*     33, std::span(board.GetPointsBuffer())); */
+  NcursesRenderer
+    renderer {main_height, main_width, 33, std::span(board.GetPointsBuffer())};
 
   renderer.AddInputListener('a',
       std::bind(
@@ -36,6 +36,9 @@ int main()
         &PongBoard::MovePlayer<PongBoard::PlayerType::TWO, PongBoard::PlayerDirection::DOWN>,
         &board)
   );
+
+  renderer.AddFrameUpdateListener(std::bind(&PongBoard::StateUpdate, &board));
+
   renderer.RunRenderer();
   return 0;
 }

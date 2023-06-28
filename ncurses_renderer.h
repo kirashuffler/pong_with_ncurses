@@ -26,7 +26,7 @@ public:
     keypad(stdscr, TRUE);
     refresh();
     main_window_ = newwin(window_height_, window_width_, 0, 0);
-    nodelay(main_window_, TRUE);
+    nodelay(stdscr, TRUE);
     box(main_window_, 0, 0);
     wrefresh(main_window_);
   }

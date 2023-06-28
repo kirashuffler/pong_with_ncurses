@@ -25,12 +25,15 @@ public:
 
   void Initialize(uint16_t x, uint16_t y);
   void Move(uint16_t diff);
+  void UpdateYDiff();
 
   std::span<Point> points;
+  int16_t d_y;
+
+private:
+  uint16_t d_y_cur_tick_ = 0;
+  static constexpr uint16_t d_y_ticks_target_ = 20;
+  uint16_t prev_y_;
 };
 
-
-
-
-
-}
+} // namespace pong_game
